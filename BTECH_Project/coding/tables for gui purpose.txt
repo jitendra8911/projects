@@ -1,0 +1,5 @@
+for gui purpose
+
+
+1)log_information
+2)data_cleaning

@@ -1,0 +1,180 @@
+Vector v4=new Vector();
+for(i=0;i<vtable.size();i++)
+{
+ Vector v5=new Vector();
+ Vector v6=new Vector();
+ Vector v7=(Vector)vtable.get(i);
+ v6=a1.only_subgroup1(v7);
+ for(g=0;g<v6.size();g++)
+ {
+  v5.add(v6.get(g));
+ }
+ Vector v=(Vector)v6.get(i); 
+ while(v.size()>1)
+ {
+  v6=a1.only_subgroup2((Vector)v6.get(i));
+  for(g=0;g<v6.size();g++)
+  {
+    v5.add(v6.get(g));
+  }
+  v=(Vector)v6.get(i);
+   System.out.println("\n"+" v.size() "+v.size()+"\n");
+ } 
+ v4.add(v5);
+}
+
+
+System.out.println("v4 is"+v4+"\n");
+
+
+
+
+
+
+
+Vector v6=new Vector();
+ Vector v7=new Vector();
+ Vector v8=a1.only_subgroup2(vtable);
+Vector v9=new Vector();
+Vector v10=new Vector();
+
+for(j=0;j<vtable.size();j++)
+{
+ Vector v9=(Vector)v8.get(j);
+ for(k=0;k<v9.size();k++)
+ {
+  v10.add(v9.get(k));
+ }
+ Vector v11=(Vector)v8.get(j);
+ v6=a1.only_subgroup2(v11);
+ for(s=0;s<v6.size();s++)
+ {
+   Vector v12=(Vector)v6.get(s);
+   for(p=0;p<v12.size();p++)
+   {
+     v10.add((Vector)v12.get(p);
+   }
+  }
+ for(i=0;i<v6.size();i++)
+  {
+   Vector v=(Vector)v6.get(0);
+   if(v.size()==2)
+   {
+     break;
+   }
+   
+  v7=a1.only_subgroup2((Vector)v6.get(i));
+  } 
+}
+
+
+
+
+
+
+
+
+//for individual elements
+
+for(s=0;s<v6.size();s++)
+ {
+   Vector v12=(Vector)v6.get(s);
+   for(p=0;p<v12.size();p++)
+   {
+     v10.add((Vector)v12.get(p);
+   }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// for only_subgroups
+
+Vector only_subgroup1(Vector vtable)
+{
+Vector v3=new Vector();                             // for subgroups in Ck
+//for(g=0;g<vtable.size();g++)
+//{
+ Vector v2=new Vector();
+ //Vector v=(Vector)vtable.get(g);
+ if(vtable.size()==2)
+ {
+   for(i=0;i<vtable.size();i++)
+   {
+     Vector v1=new Vector();
+     v1.add(vtable.get(i));
+     v2.add(v1);
+   }
+   v3.add(v2);
+  }
+ else
+ { 
+ for(i=0;i<=1;i++)
+ {
+   
+   for(j=i+1;j<=2;j++)
+   {
+     
+     if(i==0 && (j==vtable.size()-1))
+     {   }
+     else
+     {
+     s=j;
+     str="";
+     while(s<vtable.size())
+     {
+         m=j;
+         Vector v1=new Vector();
+         v1.add(vtable.get(i));
+         
+         for(p=1;p<vtable.size()-1;p++)
+         {
+           //System.out.println(p+"\n");
+           String t=(String)vtable.get(m);
+           if(t.compareTo(str)!=0)
+           {
+             
+             //System.out.println(str+" in if "+"\n");
+             v1.add(vtable.get(m));
+           }
+           else
+           {
+             //System.out.println(str+" in else "+"\n");
+             v1.add(vtable.get(++m));  
+           }
+           m++;
+          //System.out.println(" m is "+m+"\n");
+         }
+         s=m;
+         str=(String)vtable.get(m-1);
+         v2.add(v1);
+        // System.out.println("adding"+v1+"\n");
+      }}
+     }
+   }
+   v3.add(v2);
+ }
+//}
+System.out.println("\n"+" subgroups "+v3.get(0)+"\n");
+return v3;
+}//for only_subgroup1
+  
+  

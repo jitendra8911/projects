@@ -1,0 +1,153 @@
+                           QUERIES
+
+1)select l1.client_ip,l1.version,l2.client_ip,l2.version 
+from log_info l1,log_info l2 where l1.client_ip=l2.client_ip 
+and l1.version<>l2.version
+
+
+2)create table log1
+as select * from log_info
+where url not like '%jpg'
+and
+url not like '%png'
+and
+url not like '%gif'
+and
+url not like '/robots.txt' 
+and 
+url not like '%.GIF'
+and 
+url not like '%.css'
+and 
+url not like '%.js'
+and
+url not like '%.JPG'
+and 
+url not like '%.PNG'
+and 
+url not like '%favicon%'
+and
+user_agent not like '%.com%'
+
+
+3)select client_ip,user_agent,version,cookie from log1
+group by(client_ip,user_agent,version,cookie) having cookie<>'-'
+
+
+
+
+4)SET SERVEROUTPUT ON
+DECLARE
+h varchar2(19):='hello';
+BEGIN
+select concat(h,'world') into h from dual;
+dbms_output.put_line(h);
+select concat(h,'hai') into h from dual;
+dbms_output.put_line(h);
+END;
+
+
+
+
+
+5)declare
+ip log2.client_ip%type;
+agent log2.user_agent%type;
+version log2.version%type;
+cookie log2.cookie%type;
+v1 long;
+cursor c1 is 
+select * from log2;
+cursor c2 is 
+select * from log1
+where cookie in (select cookie from log2);
+begin
+open c1;
+loop
+fetch c1 into ip,agent,version,cookie;
+for r2 in c2 loop
+if c2%rowcount<=1 then
+select concat(r2.referer,r2.url) into v1 from dual;
+else
+select concat(v1,'->') into v1 from dual;
+select concat(v1,r2.referer) into v1 from dual;
+end if;
+select concat(v1,'->') into v1 from dual;
+select concat(v1,r2.url) into v1 from dual;
+end loop;
+insert into log3
+values(ip,v1);
+exit when c1%notfound;
+end loop;
+end;
+
+
+alter tablespace temp add tempfile '/usr/oracle/temp999.dbf' size 500M;
+
+
+create table log3(client_ip varchar2(100),path clob);
+
+
+
+
+
+line length overflow, limit of 255 bytes/chars per line 
+
+
+
+
+dbms_output.put_line('hai');
+dbms_output.put_line(v1);
+
+
+
+
+declare
+ip log2.client_ip%type;
+agent log2.user_agent%type;
+version log2.version%type;
+cookie log2.cookie%type;
+v1 clob;
+cursor c1 is 
+select * from log2;
+cursor c2 
+(cook varchar2) is 
+select * from log1
+where cookie=cook;
+r2 c2%rowtype;
+begin
+open c1;
+loop
+fetch c1 into ip,agent,version,cookie;
+exit when c1%notfound;
+open c2(cookie);
+loop 
+fetch c2 into r2;
+exit when c2%notfound;
+if c2%rowcount=1 then
+select concat(r2.referer,'->') into v1 from dual;
+select concat(v1,r2.url) into v1 from dual;
+else
+select concat(v1,'->') into v1 from dual;
+select concat(v1,r2.referer) into v1 from dual;
+select concat(v1,'->') into v1 from dual;
+select concat(v1,r2.url) into v1 from dual;
+end if;
+end loop;
+close c2;
+insert into log3
+values(ip,v1);
+DBMS_LOB.FREETEMPORARY(v1);
+end loop;
+commit;
+end;
+
+
+
+
+
+Session identification
+
+select distinct l1.time,l1.url,l1.client_ip,l2.time,l2.url,l2.client_ip from log_table1 l1,log_table1 l2
+where l1.client_ip=l2.client_ip and l1.user_agent=l2.user_agent and l1.cookie=l2.cookie and l1.version=l2.version and extract(minute from (l1.time-l2.time))>30;
+ 
